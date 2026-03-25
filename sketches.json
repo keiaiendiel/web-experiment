@@ -7,5 +7,176 @@
     "description": "10,000 particles following Perlin noise vectors. Tap to randomize.",
     "libs": [],
     "permissions": []
+  },
+  {
+    "id": "002-noise-typography",
+    "title": "Noise Typography",
+    "date": "2026-03-25",
+    "category": "typography",
+    "description": "Autonomous characters displaced by Perlin noise. Mouse repels glyphs.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "003-game-of-life",
+    "title": "Game of Life",
+    "date": "2026-03-25",
+    "category": "automata",
+    "description": "Conway's cellular automata. Cells age from white through blue to purple. Draw with mouse.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "004-physarum",
+    "title": "Physarum",
+    "date": "2026-03-25",
+    "category": "agent",
+    "description": "Slime mold agents depositing pheromone trails. Organic network emergence.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "005-particle-gravity",
+    "title": "Particle Gravity",
+    "date": "2026-03-25",
+    "category": "particles",
+    "description": "2,000 particles with gravitational attraction. Click toggles attract/repel.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "006-boids",
+    "title": "Boids",
+    "date": "2026-03-25",
+    "category": "swarm",
+    "description": "1,500 flocking agents with separation, alignment, cohesion. Mouse repels.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "007-differential-growth",
+    "title": "Differential Growth",
+    "date": "2026-03-25",
+    "category": "growth",
+    "description": "Closed curve that grows by inserting points at stressed segments. Mouse pushes.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "008-strange-attractor",
+    "title": "Strange Attractor",
+    "date": "2026-03-25",
+    "category": "chaos",
+    "description": "Clifford attractor with density accumulation. Mouse modulates parameters.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "009-cloth",
+    "title": "Cloth",
+    "date": "2026-03-25",
+    "category": "physics",
+    "description": "Verlet integration fabric. Drag to deform, double-click to tear.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "010-reaction-diffusion",
+    "title": "Reaction Diffusion",
+    "date": "2026-03-25",
+    "category": "growth",
+    "description": "Gray-Scott model producing coral, mitosis, and maze patterns. Mouse injects chemical.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "011-voronoi",
+    "title": "Voronoi",
+    "date": "2026-03-25",
+    "category": "tessellation",
+    "description": "200 drifting seed points. Nearest-neighbor coloring with edge detection. Mouse repels.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "012-recursive-tree",
+    "title": "Recursive Tree",
+    "date": "2026-03-25",
+    "category": "growth",
+    "description": "Fractal branching tree with noise-driven wobble. Mouse X = wind, Y = branch angle.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "013-magnetic-pendulum",
+    "title": "Magnetic Pendulum",
+    "date": "2026-03-25",
+    "category": "chaos",
+    "description": "Pendulum over three colored magnets. Chaotic trails. Click to spawn new pendulum.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "014-dla",
+    "title": "DLA",
+    "date": "2026-03-25",
+    "category": "growth",
+    "description": "Diffusion-limited aggregation. Slow crystalline growth from center. Click to place seeds.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "015-langtons-ant",
+    "title": "Langton's Ant",
+    "date": "2026-03-25",
+    "category": "automata",
+    "description": "Five ants with different rulesets competing for territory. Click to spawn.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "016-wave-interference",
+    "title": "Wave Interference",
+    "date": "2026-03-25",
+    "category": "physics",
+    "description": "Circular waves with constructive/destructive interference. Click to place sources.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "017-spirograph",
+    "title": "Spirograph",
+    "date": "2026-03-25",
+    "category": "geometry",
+    "description": "Layered hypotrochoid curves. Mouse controls radius ratios. Click to regenerate.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "018-text-rain",
+    "title": "Text Rain",
+    "date": "2026-03-25",
+    "category": "typography",
+    "description": "Characters falling like rain with wind. Mouse creates updraft. Click spawns burst.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "019-orbit",
+    "title": "Orbit",
+    "date": "2026-03-25",
+    "category": "particles",
+    "description": "N-body gravitational system with orbital trails. Click-drag to launch new bodies.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "020-breathing-grid",
+    "title": "Breathing Grid",
+    "date": "2026-03-25",
+    "category": "geometry",
+    "description": "Grid of circles oscillating with distance to cursor and Perlin noise ripples.",
+    "libs": [],
+    "permissions": []
   }
 ]
