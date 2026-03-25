@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>play.kindl.work</title>
+  <style>
+    @font-face {
+      font-family: 'Krapka';
+      src: url('fonts/DRKrapkaRound-FontSize10px.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: block;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: #000;
+      font-family: 'Krapka', 'Courier New', monospace;
+      -webkit-font-smoothing: none;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    #sketch-frame {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+      background: #000;
+    }
+
+    #overlay {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+
+    #overlay.hidden { opacity: 0; }
+
+    .overlay-text {
+      font-size: 10px;
+      line-height: 1;
+      letter-spacing: 0;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px 6px;
+      white-space: nowrap;
+    }
+
+    #info-panel {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 16px;
+      z-index: 20;
+      transform: translateY(100%);
+      transition: transform 0.3s ease;
+      pointer-events: none;
+    }
+
+    #info-panel.visible {
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    #info-panel .info-line {
+      font-size: 10px;
+      line-height: 1.6;
+      color: #fff;
+    }
+
+    #info-panel .info-label {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    #loading {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.3);
+      z-index: 5;
+      transition: opacity 0.3s ease;
+    }
+
+    #loading.hidden { opacity: 0; }
+  </style>
+</head>
+<body>
+  <div id="loading">loading</div>
+  <iframe id="sketch-frame" allow="camera; microphone; autoplay"></iframe>
+
+  <div id="overlay">
+    <span id="overlay-title" class="overlay-text"></span>
+    <span id="overlay-count" class="overlay-text"></span>
+  </div>
+
+  <div id="info-panel">
+    <div class="info-line"><span class="info-label">title </span><span id="info-title"></span></div>
+    <div class="info-line"><span class="info-label">date  </span><span id="info-date"></span></div>
+    <div class="info-line"><span class="info-label">type  </span><span id="info-category"></span></div>
+    <div class="info-line"><span class="info-label">about </span><span id="info-description"></span></div>
+    <div class="info-line" style="margin-top: 8px; color: rgba(255,255,255,0.3);">
+      arrows: next/prev &middot; g: archive &middot; i: info &middot; f: fullscreen &middot; r: reload
+    </div>
+  </div>
+
+  <script>
+    let sketches = [];
+    let currentIndex = -1;
+    let history = [];
+    let hideTimer = null;
+    let infoVisible = false;
+
+    const frame = document.getElementById('sketch-frame');
+    const overlay = document.getElementById('overlay');
+    const loading = document.getElementById('loading');
+    const overlayTitle = document.getElementById('overlay-title');
+    const overlayCount = document.getElementById('overlay-count');
+    const infoPanel = document.getElementById('info-panel');
+
+    // Load manifest
+    fetch('sketches.json')
+      .then(r => r.json())
+      .then(data => {
+        sketches = data;
+        const params = new URLSearchParams(window.location.search);
+        const requested = params.get('sketch');
+        if (requested) {
+          const idx = sketches.findIndex(s => s.id === requested);
+          if (idx !== -1) { loadSketch(idx, params.get('seed')); return; }
+        }
+        loadRandom();
+      })
+      .catch(() => {
+        loading.textContent = 'no sketches found';
+      });
+
+    function loadSketch(index, seed) {
+      currentIndex = index;
+      const sketch = sketches[index];
+      const seedParam = seed || Date.now();
+
+      // Show loading
+      loading.classList.remove('hidden');
+
+      // Load iframe
+      frame.src = `sketches/${sketch.id}/index.html?seed=${seedParam}`;
+
+      // Update overlay
+      overlayTitle.textContent = sketch.title.toLowerCase();
+      overlayCount.textContent = `${String(index + 1).padStart(3, '0')} / ${String(sketches.length).padStart(3, '0')}`;
+
+      // Update info panel
+      document.getElementById('info-title').textContent = sketch.title;
+      document.getElementById('info-date').textContent = sketch.date;
+      document.getElementById('info-category').textContent = sketch.category;
+      document.getElementById('info-description').textContent = sketch.description;
+
+      // Update URL without reload
+      const url = new URL(window.location);
+      url.searchParams.set('sketch', sketch.id);
+      window.history.replaceState({}, '', url);
+
+      // Show overlay, schedule hide
+      showOverlay();
+
+      // Add to history
+      history.push(index);
+    }
+
+    function loadRandom() {
+      if (sketches.length === 0) return;
+      let idx;
+      if (sketches.length === 1) {
+        idx = 0;
+      } else {
+        do { idx = Math.floor(Math.random() * sketches.length); }
+        while (idx === currentIndex);
+      }
+      loadSketch(idx);
+    }
+
+    function loadPrevious() {
+      if (history.length < 2) return;
+      history.pop(); // remove current
+      const prevIdx = history[history.length - 1];
+      history.pop(); // will be re-added by loadSketch
+      loadSketch(prevIdx);
+    }
+
+    // Listen for sketch ready signal
+    window.addEventListener('message', (e) => {
+      if (e.data && e.data.type === 'ready') {
+        loading.classList.add('hidden');
+      }
+    });
+
+    // Also hide loading after timeout (fallback for sketches that don't signal)
+    frame.addEventListener('load', () => {
+      setTimeout(() => loading.classList.add('hidden'), 1500);
+    });
+
+    // Overlay show/hide
+    function showOverlay() {
+      overlay.classList.remove('hidden');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        if (!infoVisible) overlay.classList.add('hidden');
+      }, 3000);
+    }
+
+    document.addEventListener('mousemove', showOverlay);
+    document.addEventListener('touchstart', showOverlay);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      // Don't intercept if info panel has focus
+      switch (e.key) {
+        case 'ArrowRight':
+        case ' ':
+          e.preventDefault();
+          loadRandom();
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          loadPrevious();
+          break;
+        case 'g':
+        case 'G':
+          window.location.href = 'archive.html';
+          break;
+        case 'i':
+        case 'I':
+          infoVisible = !infoVisible;
+          infoPanel.classList.toggle('visible', infoVisible);
+          if (infoVisible) showOverlay();
+          break;
+        case 'f':
+        case 'F':
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          } else {
+            document.exitFullscreen();
+          }
+          break;
+        case 'r':
+        case 'R':
+          if (currentIndex >= 0) loadSketch(currentIndex);
+          break;
+      }
+    });
+  </script>
+</body>
+</html>
