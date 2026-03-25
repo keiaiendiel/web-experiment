@@ -86,4 +86,4 @@ function windowResized() {
     waves[i].amp = sectionH * 0.25;
   }
 }
-function touchStarted() { mousePressed(); return false; }
+function touchStarted() { }

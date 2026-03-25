@@ -118,4 +118,4 @@ function windowResized() {
   initChars();
 }
 
-function touchStarted() { return false; }
+function touchStarted() { }

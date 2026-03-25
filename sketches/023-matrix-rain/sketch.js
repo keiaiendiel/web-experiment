@@ -94,4 +94,4 @@ function draw() {
 }
 
 function windowResized() { resizeCanvas(windowWidth, windowHeight); initColumns(); }
-function touchStarted() { return false; }
+function touchStarted() { }

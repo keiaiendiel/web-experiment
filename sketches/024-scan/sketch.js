@@ -81,4 +81,4 @@ function draw() {
 }
 
 function windowResized() { resizeCanvas(windowWidth, windowHeight); }
-function touchStarted() { return false; }
+function touchStarted() { }

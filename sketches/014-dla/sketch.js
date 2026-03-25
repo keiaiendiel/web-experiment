@@ -124,4 +124,4 @@ function hsvToRgb(h, s, v) {
 }
 
 function windowResized() { resizeCanvas(windowWidth, windowHeight); initGrid(); }
-function touchStarted() { mousePressed(); return false; }
+function touchStarted() { }

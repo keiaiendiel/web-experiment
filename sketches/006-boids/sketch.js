@@ -119,4 +119,4 @@ function windowResized() {
   initGrid();
 }
 
-function touchStarted() { return false; }
+function touchStarted() { }

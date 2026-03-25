@@ -119,4 +119,4 @@ function windowResized() {
   background(0);
 }
 
-function touchStarted() { return false; }
+function touchStarted() { }

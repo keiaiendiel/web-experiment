@@ -85,4 +85,4 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
   background(9, 9, 11);
 }
-function touchStarted() { mousePressed(); return false; }
+function touchStarted() { }

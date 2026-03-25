@@ -121,4 +121,4 @@ function mousePressed() {
 }
 
 function windowResized() { resizeCanvas(windowWidth, windowHeight); initGrid(); }
-function touchStarted() { mousePressed(); return false; }
+function touchStarted() { }

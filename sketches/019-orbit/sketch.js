@@ -129,5 +129,5 @@ function mouseReleased() {
 }
 
 function windowResized() { resizeCanvas(windowWidth, windowHeight); background(0); }
-function touchStarted() { mousePressed(); return false; }
-function touchEnded() { mouseReleased(); return false; }
+function touchStarted() { }
+function touchEnded() { mouseReleased(); }

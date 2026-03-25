@@ -81,4 +81,4 @@ function windowResized() {
   gw = Math.ceil(width / SCALE);
   gh = Math.ceil(height / SCALE);
 }
-function touchStarted() { return false; }
+function touchStarted() { }

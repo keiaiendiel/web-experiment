@@ -65,4 +65,4 @@ function windowResized() {
   rows = Math.ceil(height / SPACING) + 1;
 }
 
-function touchStarted() { return false; }
+function touchStarted() { }

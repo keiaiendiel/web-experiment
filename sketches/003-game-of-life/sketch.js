@@ -125,4 +125,4 @@ function windowResized() {
   buf = new Uint8Array(cols * rows);
 }
 
-function touchStarted() { drawCells(); return false; }
+function touchStarted() { }

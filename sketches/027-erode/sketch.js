@@ -101,4 +101,4 @@ function draw() {
 
 function mousePressed() { initSurface(); return false; }
 function windowResized() { resizeCanvas(windowWidth, windowHeight); initSurface(); }
-function touchStarted() { return false; }
+function touchStarted() { }

@@ -113,4 +113,4 @@ function windowResized() {
   baseImg.resizeCanvas(width, height);
   generateBase();
 }
-function touchStarted() { return false; }
+function touchStarted() { }

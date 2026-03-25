@@ -86,4 +86,4 @@ function windowResized() {
   for (const l of layers) { l.px = null; l.py = null; }
 }
 
-function touchStarted() { mousePressed(); return false; }
+function touchStarted() { }

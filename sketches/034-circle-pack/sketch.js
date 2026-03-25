@@ -98,4 +98,4 @@ function mousePressed() {
 }
 
 function windowResized() { resizeCanvas(windowWidth, windowHeight); circles = []; }
-function touchStarted() { mousePressed(); return false; }
+function touchStarted() { }

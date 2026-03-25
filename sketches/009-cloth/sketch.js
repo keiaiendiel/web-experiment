@@ -139,9 +139,9 @@ function windowResized() {
   initCloth();
 }
 
-function touchStarted() {
+function touchStarted() { }
   mousePressed();
   return false;
 }
 
-function touchEnded() { dragging = null; return false; }
+function touchEnded() { mouseReleased(); }

@@ -118,4 +118,4 @@ function windowResized() {
   trail = new Float32Array(tw * th);
 }
 
-function touchStarted() { return false; }
+function touchStarted() { }

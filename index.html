@@ -22,7 +22,7 @@
       font-family: 'Krapka', 'Courier New', monospace;
       -webkit-font-smoothing: none;
       -moz-osx-font-smoothing: grayscale;
-      touch-action: none;
+      touch-action: manipulation;
       -webkit-user-select: none;
       user-select: none;
     }
@@ -34,17 +34,6 @@
       border: none;
       background: #09090b;
     }
-
-    /* ── Mobile nav zones ── */
-    #touch-left, #touch-right {
-      position: fixed;
-      top: 0;
-      width: 44px;
-      height: 100%;
-      z-index: 15;
-    }
-    #touch-left { left: 0; }
-    #touch-right { right: 0; }
 
     /* ── Bottom bar (mobile) ── */
     #mobile-bar {
@@ -189,19 +178,14 @@
     }
 
     @media (hover: hover) {
-      /* Desktop: hide mobile bar, show desktop overlay, hide touch zones */
+      /* Desktop: hide mobile bar, show desktop overlay */
       #mobile-bar { display: none !important; }
-      #touch-left, #touch-right { display: none; }
     }
   </style>
 </head>
 <body>
   <div id="loading">loading</div>
   <iframe id="sketch-frame" allow="camera; microphone; autoplay"></iframe>
-
-  <!-- Mobile: edge tap zones for prev/next -->
-  <div id="touch-left"></div>
-  <div id="touch-right"></div>
 
   <!-- Mobile: bottom navigation bar -->
   <div id="mobile-bar">
@@ -378,48 +362,6 @@
       infoVisible = false;
       infoPanel.classList.remove('visible');
     });
-
-    // ── Mobile: edge swipe zones ──
-    let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
-    const SWIPE_THRESHOLD = 30;
-    const TAP_THRESHOLD = 10;
-
-    function handleEdgeTouch(e, zone) {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-      touchStartTime = Date.now();
-    }
-
-    function handleEdgeTouchEnd(e, zone) {
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      const dy = e.changedTouches[0].clientY - touchStartY;
-      const dt = Date.now() - touchStartTime;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      if (dist < TAP_THRESHOLD && dt < 300) {
-        // Tap on edge
-        if (zone === 'left') loadPrev();
-        else loadNext();
-        showOverlay();
-      } else if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
-        // Horizontal swipe
-        if (dx < 0) loadNext();
-        else loadPrev();
-        showOverlay();
-      }
-    }
-
-    const touchLeft = document.getElementById('touch-left');
-    const touchRight = document.getElementById('touch-right');
-
-    touchLeft.addEventListener('touchstart', (e) => handleEdgeTouch(e, 'left'), { passive: true });
-    touchLeft.addEventListener('touchend', (e) => handleEdgeTouchEnd(e, 'left'));
-    touchRight.addEventListener('touchstart', (e) => handleEdgeTouch(e, 'right'), { passive: true });
-    touchRight.addEventListener('touchend', (e) => handleEdgeTouchEnd(e, 'right'));
-
-    // Show bar on any touch in the zone
-    touchLeft.addEventListener('touchstart', showOverlay, { passive: true });
-    touchRight.addEventListener('touchstart', showOverlay, { passive: true });
 
     // ── Keyboard (desktop) ──
     document.addEventListener('keydown', (e) => {

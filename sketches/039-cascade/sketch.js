@@ -118,4 +118,4 @@ function mousePressed() {
 }
 
 function windowResized() { resizeCanvas(windowWidth, windowHeight); initBlocks(); }
-function touchStarted() { return false; }
+function touchStarted() { }
