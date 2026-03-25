@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <title>play.kindl.work</title>
   <style>
     @font-face {
@@ -18,10 +18,13 @@
     html, body {
       width: 100%; height: 100%;
       overflow: hidden;
-      background: #000;
+      background: #09090b;
       font-family: 'Krapka', 'Courier New', monospace;
       -webkit-font-smoothing: none;
       -moz-osx-font-smoothing: grayscale;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
     #sketch-frame {
@@ -29,9 +32,71 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       border: none;
-      background: #000;
+      background: #09090b;
     }
 
+    /* ── Mobile nav zones ── */
+    #touch-left, #touch-right {
+      position: fixed;
+      top: 0;
+      width: 44px;
+      height: 100%;
+      z-index: 15;
+    }
+    #touch-left { left: 0; }
+    #touch-right { right: 0; }
+
+    /* ── Bottom bar (mobile) ── */
+    #mobile-bar {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      padding: 0 0 env(safe-area-inset-bottom, 0);
+      z-index: 20;
+      background: linear-gradient(transparent, rgba(0,0,0,0.6));
+      transition: opacity 0.3s ease;
+    }
+
+    #mobile-bar.hidden { opacity: 0; pointer-events: none; }
+
+    #mobile-bar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px 12px;
+    }
+
+    .mobile-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.7);
+      font-family: 'Krapka', 'Courier New', monospace;
+      font-size: 10px;
+      padding: 8px 14px;
+      border-radius: 2px;
+      -webkit-font-smoothing: none;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-btn:active {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    #mobile-title {
+      font-size: 10px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      flex: 1;
+      padding: 0 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ── Desktop overlay ── */
     #overlay {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -57,12 +122,14 @@
       white-space: nowrap;
     }
 
+    /* ── Info panel ── */
     #info-panel {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(9, 9, 11, 0.92);
       padding: 16px;
-      z-index: 20;
+      padding-bottom: calc(16px + env(safe-area-inset-bottom, 0));
+      z-index: 25;
       transform: translateY(100%);
       transition: transform 0.3s ease;
       pointer-events: none;
@@ -76,51 +143,100 @@
     #info-panel .info-line {
       font-size: 10px;
       line-height: 1.6;
-      color: #fff;
+      color: #e4e4e7;
     }
 
     #info-panel .info-label {
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.35);
     }
 
+    #info-panel .info-hint {
+      margin-top: 8px;
+      color: rgba(255,255,255,0.2);
+      font-size: 10px;
+    }
+
+    #info-close {
+      position: absolute;
+      top: 12px; right: 16px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.4);
+      font-family: 'Krapka', monospace;
+      font-size: 10px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    /* ── Loading ── */
     #loading {
       position: fixed;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       font-size: 10px;
-      color: rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 0.2);
       z-index: 5;
       transition: opacity 0.3s ease;
     }
 
-    #loading.hidden { opacity: 0; }
+    #loading.hidden { opacity: 0; pointer-events: none; }
+
+    /* ── Responsive ── */
+    @media (hover: none) and (pointer: coarse) {
+      /* Touch device: show mobile bar, hide desktop overlay */
+      #mobile-bar { display: block; }
+      #overlay { display: none; }
+    }
+
+    @media (hover: hover) {
+      /* Desktop: hide mobile bar, show desktop overlay, hide touch zones */
+      #mobile-bar { display: none !important; }
+      #touch-left, #touch-right { display: none; }
+    }
   </style>
 </head>
 <body>
   <div id="loading">loading</div>
   <iframe id="sketch-frame" allow="camera; microphone; autoplay"></iframe>
 
+  <!-- Mobile: edge tap zones for prev/next -->
+  <div id="touch-left"></div>
+  <div id="touch-right"></div>
+
+  <!-- Mobile: bottom navigation bar -->
+  <div id="mobile-bar">
+    <div id="mobile-bar-inner">
+      <button class="mobile-btn" id="btn-prev">&lt;</button>
+      <span id="mobile-title"></span>
+      <button class="mobile-btn" id="btn-info">i</button>
+      <button class="mobile-btn" id="btn-next">&gt;</button>
+    </div>
+  </div>
+
+  <!-- Desktop: minimal overlay -->
   <div id="overlay">
     <span id="overlay-title" class="overlay-text"></span>
     <span id="overlay-count" class="overlay-text"></span>
   </div>
 
+  <!-- Info panel (both) -->
   <div id="info-panel">
+    <button id="info-close">close</button>
     <div class="info-line"><span class="info-label">title </span><span id="info-title"></span></div>
     <div class="info-line"><span class="info-label">date  </span><span id="info-date"></span></div>
     <div class="info-line"><span class="info-label">type  </span><span id="info-category"></span></div>
     <div class="info-line"><span class="info-label">about </span><span id="info-description"></span></div>
-    <div class="info-line" style="margin-top: 8px; color: rgba(255,255,255,0.3);">
-      arrows: next/prev &middot; g: archive &middot; i: info &middot; f: fullscreen &middot; r: reload
-    </div>
+    <div class="info-hint" id="info-hint-desktop">arrows: next/prev · i: info · f: fullscreen · r: reload</div>
+    <div class="info-hint" id="info-hint-mobile">swipe edges or use buttons to navigate</div>
   </div>
 
   <script>
     let sketches = [];
     let currentIndex = -1;
-    let history = [];
+    let navHistory = [];
     let hideTimer = null;
     let infoVisible = false;
+    let loadId = 0; // prevents stale loads
 
     const frame = document.getElementById('sketch-frame');
     const overlay = document.getElementById('overlay');
@@ -128,8 +244,12 @@
     const overlayTitle = document.getElementById('overlay-title');
     const overlayCount = document.getElementById('overlay-count');
     const infoPanel = document.getElementById('info-panel');
+    const mobileBar = document.getElementById('mobile-bar');
+    const mobileTitle = document.getElementById('mobile-title');
 
-    // Load manifest
+    const isMobile = matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+    // ── Load manifest ──
     fetch('sketches.json')
       .then(r => r.json())
       .then(data => {
@@ -142,121 +262,192 @@
         }
         loadRandom();
       })
-      .catch(() => {
-        loading.textContent = 'no sketches found';
-      });
+      .catch(() => { loading.textContent = 'no sketches found'; });
 
+    // ── Core navigation ──
     function loadSketch(index, seed) {
       currentIndex = index;
       const sketch = sketches[index];
       const seedParam = seed || Date.now();
+      const thisLoad = ++loadId;
 
-      // Show loading
       loading.classList.remove('hidden');
 
-      // Load iframe
-      frame.src = `sketches/${sketch.id}/index.html?seed=${seedParam}`;
+      // Cache-bust: append unique param to prevent browser skipping identical src
+      frame.src = `sketches/${sketch.id}/index.html?seed=${seedParam}&_=${thisLoad}`;
 
-      // Update overlay
+      // Update UI
+      const countStr = `${String(index + 1).padStart(3, '0')} / ${String(sketches.length).padStart(3, '0')}`;
       overlayTitle.textContent = sketch.title.toLowerCase();
-      overlayCount.textContent = `${String(index + 1).padStart(3, '0')} / ${String(sketches.length).padStart(3, '0')}`;
+      overlayCount.textContent = countStr;
+      mobileTitle.textContent = `${sketch.title.toLowerCase()}  ${countStr}`;
 
-      // Update info panel
       document.getElementById('info-title').textContent = sketch.title;
       document.getElementById('info-date').textContent = sketch.date;
       document.getElementById('info-category').textContent = sketch.category;
       document.getElementById('info-description').textContent = sketch.description;
 
-      // Update URL without reload
+      // URL
       const url = new URL(window.location);
       url.searchParams.set('sketch', sketch.id);
       window.history.replaceState({}, '', url);
 
-      // Show overlay, schedule hide
       showOverlay();
-
-      // Add to history
-      history.push(index);
+      navHistory.push(index);
+      if (navHistory.length > 50) navHistory.shift();
     }
 
     function loadRandom() {
       if (sketches.length === 0) return;
       let idx;
-      if (sketches.length === 1) {
-        idx = 0;
-      } else {
-        do { idx = Math.floor(Math.random() * sketches.length); }
-        while (idx === currentIndex);
+      if (sketches.length <= 1) { idx = 0; }
+      else {
+        // Pick random, avoid current and previous
+        let attempts = 0;
+        do {
+          idx = Math.floor(Math.random() * sketches.length);
+          attempts++;
+        } while (idx === currentIndex && attempts < 20);
       }
       loadSketch(idx);
     }
 
-    function loadPrevious() {
-      if (history.length < 2) return;
-      history.pop(); // remove current
-      const prevIdx = history[history.length - 1];
-      history.pop(); // will be re-added by loadSketch
-      loadSketch(prevIdx);
+    function loadNext() {
+      if (sketches.length === 0) return;
+      const idx = (currentIndex + 1) % sketches.length;
+      loadSketch(idx);
     }
 
-    // Listen for sketch ready signal
-    window.addEventListener('message', (e) => {
-      if (e.data && e.data.type === 'ready') {
-        loading.classList.add('hidden');
+    function loadPrev() {
+      if (navHistory.length >= 2) {
+        navHistory.pop();
+        const prevIdx = navHistory[navHistory.length - 1];
+        navHistory.pop();
+        loadSketch(prevIdx);
+      } else if (sketches.length > 0) {
+        const idx = (currentIndex - 1 + sketches.length) % sketches.length;
+        loadSketch(idx);
       }
+    }
+
+    // ── Loading state ──
+    window.addEventListener('message', (e) => {
+      if (e.data && e.data.type === 'ready') loading.classList.add('hidden');
     });
 
-    // Also hide loading after timeout (fallback for sketches that don't signal)
     frame.addEventListener('load', () => {
-      setTimeout(() => loading.classList.add('hidden'), 1500);
+      setTimeout(() => loading.classList.add('hidden'), 2000);
     });
 
-    // Overlay show/hide
+    // ── Overlay show/hide ──
     function showOverlay() {
       overlay.classList.remove('hidden');
+      if (mobileBar) mobileBar.classList.remove('hidden');
       clearTimeout(hideTimer);
       hideTimer = setTimeout(() => {
-        if (!infoVisible) overlay.classList.add('hidden');
-      }, 3000);
+        if (!infoVisible) {
+          overlay.classList.add('hidden');
+          if (mobileBar) mobileBar.classList.add('hidden');
+        }
+      }, 4000);
+    }
+
+    function toggleInfo() {
+      infoVisible = !infoVisible;
+      infoPanel.classList.toggle('visible', infoVisible);
+      if (infoVisible) showOverlay();
     }
 
     document.addEventListener('mousemove', showOverlay);
-    document.addEventListener('touchstart', showOverlay);
 
-    // Keyboard navigation
+    // ── Mobile: button handlers ──
+    document.getElementById('btn-next').addEventListener('click', (e) => {
+      e.stopPropagation();
+      loadRandom();
+    });
+    document.getElementById('btn-prev').addEventListener('click', (e) => {
+      e.stopPropagation();
+      loadPrev();
+    });
+    document.getElementById('btn-info').addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleInfo();
+    });
+    document.getElementById('info-close').addEventListener('click', (e) => {
+      e.stopPropagation();
+      infoVisible = false;
+      infoPanel.classList.remove('visible');
+    });
+
+    // ── Mobile: edge swipe zones ──
+    let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+    const SWIPE_THRESHOLD = 30;
+    const TAP_THRESHOLD = 10;
+
+    function handleEdgeTouch(e, zone) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
+    }
+
+    function handleEdgeTouchEnd(e, zone) {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      const dt = Date.now() - touchStartTime;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < TAP_THRESHOLD && dt < 300) {
+        // Tap on edge
+        if (zone === 'left') loadPrev();
+        else loadNext();
+        showOverlay();
+      } else if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+        // Horizontal swipe
+        if (dx < 0) loadNext();
+        else loadPrev();
+        showOverlay();
+      }
+    }
+
+    const touchLeft = document.getElementById('touch-left');
+    const touchRight = document.getElementById('touch-right');
+
+    touchLeft.addEventListener('touchstart', (e) => handleEdgeTouch(e, 'left'), { passive: true });
+    touchLeft.addEventListener('touchend', (e) => handleEdgeTouchEnd(e, 'left'));
+    touchRight.addEventListener('touchstart', (e) => handleEdgeTouch(e, 'right'), { passive: true });
+    touchRight.addEventListener('touchend', (e) => handleEdgeTouchEnd(e, 'right'));
+
+    // Show bar on any touch in the zone
+    touchLeft.addEventListener('touchstart', showOverlay, { passive: true });
+    touchRight.addEventListener('touchstart', showOverlay, { passive: true });
+
+    // ── Keyboard (desktop) ──
     document.addEventListener('keydown', (e) => {
-      // Don't intercept if info panel has focus
       switch (e.key) {
         case 'ArrowRight':
         case ' ':
           e.preventDefault();
-          loadRandom();
+          loadNext();
           break;
         case 'ArrowLeft':
           e.preventDefault();
-          loadPrevious();
+          loadPrev();
           break;
-        case 'g':
-        case 'G':
-          window.location.href = 'archive.html';
+        case 'i': case 'I':
+          toggleInfo();
           break;
-        case 'i':
-        case 'I':
-          infoVisible = !infoVisible;
-          infoPanel.classList.toggle('visible', infoVisible);
-          if (infoVisible) showOverlay();
-          break;
-        case 'f':
-        case 'F':
+        case 'f': case 'F':
           if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen().catch(() => {});
           } else {
             document.exitFullscreen();
           }
           break;
-        case 'r':
-        case 'R':
+        case 'r': case 'R':
           if (currentIndex >= 0) loadSketch(currentIndex);
+          break;
+        case 'Escape':
+          if (infoVisible) { infoVisible = false; infoPanel.classList.remove('visible'); }
           break;
       }
     });
