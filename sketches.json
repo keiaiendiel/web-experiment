@@ -1,27 +1,227 @@
 [
-  {"id":"001-flowfield","title":"Flowfield","date":"2023-10-16","category":"flow","description":"10,000 particles following Perlin noise vectors. Tap to randomize.","libs":[],"permissions":[]},
-  {"id":"002-noise-typography","title":"Noise Typography","date":"2026-03-25","category":"typography","description":"Autonomous characters displaced by Perlin noise. Mouse repels glyphs.","libs":[],"permissions":[]},
-  {"id":"004-physarum","title":"Physarum","date":"2024-01-05","category":"agent","description":"12,000 slime mold agents depositing pheromone trails. Mouse attracts.","libs":[],"permissions":[]},
-  {"id":"006-boids","title":"Boids","date":"2026-03-25","category":"swarm","description":"1,500 flocking agents with separation, alignment, cohesion. Mouse repels.","libs":[],"permissions":[]},
-  {"id":"007-differential-growth","title":"Differential Growth","date":"2026-03-25","category":"growth","description":"Closed curve growing by inserting points at stressed segments. Mouse pushes.","libs":[],"permissions":[]},
-  {"id":"012-recursive-tree","title":"Recursive Tree","date":"2024-05-06","category":"growth","description":"Fractal branching tree. Mouse X = wind, Y = branch angle. HSB color by depth.","libs":[],"permissions":[]},
-  {"id":"013-magnetic-pendulum","title":"Magnetic Pendulum","date":"2026-03-25","category":"chaos","description":"Pendulum over three magnets. Chaotic trails. Click to spawn. Auto-respawns.","libs":[],"permissions":[]},
-  {"id":"015-langtons-ant","title":"Langton's Ant","date":"2026-03-25","category":"automata","description":"Five ants with different rulesets competing for territory. Click to spawn.","libs":[],"permissions":[]},
-  {"id":"025-dither-noise","title":"Dither Noise","date":"2026-03-25","category":"effect","description":"Perlin noise field through Floyd-Steinberg dithering. Mouse controls threshold.","libs":[],"permissions":[]},
-  {"id":"026-bayer-gradient","title":"Bayer Gradient","date":"2026-03-25","category":"effect","description":"Animated gradient through Bayer 8x8 ordered dithering. Mouse controls center.","libs":[],"permissions":[]},
-  {"id":"028-glitch","title":"Glitch","date":"2026-03-25","category":"effect","description":"Horizontal displacement, static noise, bright blocks. Mouse Y = intensity.","libs":[],"permissions":[]},
-  {"id":"035-grid-distort","title":"Grid Distort","date":"2026-03-25","category":"geometry","description":"Dot grid warped by mouse proximity and noise drift.","libs":[],"permissions":[]},
-  {"id":"036-neural-pulse","title":"Neural Pulse","date":"2026-03-25","category":"machine","description":"Connected nodes with traveling amber signal pulses. Click to fire.","libs":[],"permissions":[]},
-  {"id":"037-signal","title":"Signal","date":"2026-03-25","category":"machine","description":"Layered Lissajous waveforms. Mouse modulates frequency and amplitude.","libs":[],"permissions":[]},
-  {"id":"038-contour","title":"Contour","date":"2026-03-25","category":"geometry","description":"Animated topographic contour lines. Mouse creates hill. Click regenerates.","libs":[],"permissions":[]},
-  {"id":"039-cascade","title":"Cascade","date":"2026-03-25","category":"typography","description":"Text blocks falling with gravity. Mouse disrupts settled blocks.","libs":[],"permissions":[]},
-  {"id":"040-field-lines","title":"Field Lines","date":"2026-03-25","category":"flow","description":"Electric field lines between charges. Mouse is a moving charge. Click to place.","libs":[],"permissions":[]},
-  {"id":"041-cymatics","title":"Cymatics","date":"2023-12-07","category":"physics","description":"20,000 particles forming wave patterns. Mouse XY controls frequency.","libs":[],"permissions":[]},
-  {"id":"042-particles-repel","title":"Particles Repel","date":"2024-01-02","category":"particles","description":"3,000 particles repelled by mouse proximity. Bounce off edges.","libs":[],"permissions":[]},
-  {"id":"044-bezier-curves","title":"Bezier Curves","date":"2024-02-12","category":"flow","description":"Noise-driven flowing bezier curves accumulating on screen. Click to clear.","libs":[],"permissions":[]},
-  {"id":"045-ball-movers","title":"Ball Movers","date":"2024-02-26","category":"particles","description":"Gaussian random-walk particles. Click spawns 100 new movers.","libs":[],"permissions":[]},
-  {"id":"046-galaxy-closeup","title":"Galaxy Close Up","date":"2024-03-04","category":"particles","description":"Mass particles attracted to mouse with Gaussian drift. Click/drag spawns.","libs":[],"permissions":[]},
-  {"id":"047-wind-particles","title":"Wind Particles","date":"2024-03-25","category":"particles","description":"Particles as velocity lines driven by wind. Click randomizes wind direction.","libs":[],"permissions":[]},
-  {"id":"048-cellular-automaton","title":"Cellular Automaton","date":"2024-04-22","category":"automata","description":"1D Rule 90 automaton with varying dot sizes. Click to reset.","libs":[],"permissions":[]},
-  {"id":"049-genetic-algorithm","title":"Genetic Algorithm","date":"2024-10-28","category":"machine","description":"Particles evolve spacing via DNA. Drag to draw obstacles.","libs":[],"permissions":[]}
+  {
+    "id": "041-cymatics",
+    "title": "Cymatics",
+    "date": "2023-12-07",
+    "category": "physics",
+    "description": "20,000 particles forming wave patterns. Mouse XY controls frequency.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "037-signal",
+    "title": "Signal",
+    "date": "2026-03-25",
+    "category": "machine",
+    "description": "Layered Lissajous waveforms. Mouse modulates frequency and amplitude.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "026-bayer-gradient",
+    "title": "Bayer Gradient",
+    "date": "2026-03-25",
+    "category": "effect",
+    "description": "Animated gradient through Bayer 8x8 ordered dithering. Mouse controls center.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "045-ball-movers",
+    "title": "Ball Movers",
+    "date": "2024-02-26",
+    "category": "particles",
+    "description": "Gaussian random-walk particles. Click spawns 100 new movers.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "043-noise-terrain",
+    "title": "Noise Terrain",
+    "date": "2024-02-19",
+    "category": "geometry",
+    "description": "3D Perlin noise terrain. Mouse Y = rotation, X = noise scale. Click cycles render mode.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "015-langtons-ant",
+    "title": "Langtons Ant",
+    "date": "2026-03-25",
+    "category": "automata",
+    "description": "Five ants with different rulesets competing for territory. Click to spawn.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "014-dla",
+    "title": "DLA",
+    "date": "2026-03-25",
+    "category": "growth",
+    "description": "Diffusion-limited aggregation. Slow crystalline growth. Click to place seeds.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "035-grid-distort",
+    "title": "Grid Distort",
+    "date": "2026-03-25",
+    "category": "geometry",
+    "description": "Dot grid warped by mouse proximity and noise drift.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "040-field-lines",
+    "title": "Field Lines",
+    "date": "2026-03-25",
+    "category": "flow",
+    "description": "Electric field lines between charges. Mouse is a moving charge. Click to place.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "047-wind-particles",
+    "title": "Wind Particles",
+    "date": "2024-03-25",
+    "category": "particles",
+    "description": "Particles as velocity lines driven by wind. Click randomizes wind direction.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "036-neural-pulse",
+    "title": "Neural Pulse",
+    "date": "2026-03-25",
+    "category": "machine",
+    "description": "Connected nodes with traveling amber signal pulses. Click to fire.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "042-particles-repel",
+    "title": "Particles Repel",
+    "date": "2024-01-02",
+    "category": "particles",
+    "description": "3,000 particles repelled by mouse proximity. Bounce off edges.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "003-game-of-life",
+    "title": "Game of Life",
+    "date": "2024-01-04",
+    "category": "automata",
+    "description": "Conway cellular automata. Cells age white to gray. Mouse draws cells.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "039-cascade",
+    "title": "Cascade",
+    "date": "2026-03-25",
+    "category": "typography",
+    "description": "Text blocks falling with gravity. Mouse disrupts settled blocks.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "048-cellular-automaton",
+    "title": "Cellular Automaton",
+    "date": "2024-04-22",
+    "category": "automata",
+    "description": "1D Rule 90 automaton with varying dot sizes. Click to reset.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "038-contour",
+    "title": "Contour",
+    "date": "2026-03-25",
+    "category": "geometry",
+    "description": "Animated topographic contour lines. Mouse creates hill. Click regenerates.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "004-physarum",
+    "title": "Physarum",
+    "date": "2024-01-05",
+    "category": "agent",
+    "description": "12,000 slime mold agents depositing pheromone trails. Mouse attracts.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "049-genetic-algorithm",
+    "title": "Genetic Algorithm",
+    "date": "2024-10-28",
+    "category": "machine",
+    "description": "Particles evolve spacing via DNA. Drag to draw obstacles.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "012-recursive-tree",
+    "title": "Recursive Tree",
+    "date": "2024-05-06",
+    "category": "growth",
+    "description": "Fractal branching tree. Mouse X = wind, Y = branch angle.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "050-ecosystem",
+    "title": "Ecosystem",
+    "date": "2024-10-28",
+    "category": "machine",
+    "description": "Flocking organisms with energy. Hold mouse to create recharge zone.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "017-spirograph",
+    "title": "Spirograph",
+    "date": "2026-03-25",
+    "category": "geometry",
+    "description": "Layered hypotrochoid curves. Mouse controls radius ratios. Click to regenerate.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "019-orbit",
+    "title": "Orbit",
+    "date": "2026-03-25",
+    "category": "particles",
+    "description": "N-body gravitational system with orbital trails. Click-drag to launch new bodies.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "001-flowfield",
+    "title": "Flowfield",
+    "date": "2023-10-16",
+    "category": "flow",
+    "description": "10,000 particles following Perlin noise vectors. Tap to randomize.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "006-boids",
+    "title": "Boids",
+    "date": "2026-03-25",
+    "category": "swarm",
+    "description": "1,500 flocking agents with separation, alignment, cohesion. Mouse repels.",
+    "libs": [],
+    "permissions": []
+  },
+  {
+    "id": "046-galaxy-closeup",
+    "title": "Galaxy Close Up",
+    "date": "2024-03-04",
+    "category": "particles",
+    "description": "Mass particles attracted to mouse with Gaussian drift. Click/drag spawns.",
+    "libs": [],
+    "permissions": []
+  }
 ]
