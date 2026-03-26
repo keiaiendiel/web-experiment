@@ -22,7 +22,6 @@
       font-family: 'Krapka', 'Courier New', monospace;
       -webkit-font-smoothing: none;
       -moz-osx-font-smoothing: grayscale;
-      touch-action: manipulation;
       -webkit-user-select: none;
       user-select: none;
     }
@@ -35,87 +34,66 @@
       background: #09090b;
     }
 
-    /* ── Bottom bar (mobile) ── */
-    #mobile-bar {
-      display: none;
+    /* ── Always-visible bottom bar ── */
+    #nav-bar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
       padding: 0 0 env(safe-area-inset-bottom, 0);
       z-index: 20;
-      background: linear-gradient(transparent, rgba(0,0,0,0.6));
-      transition: opacity 0.3s ease;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      pointer-events: none;
     }
 
-    #mobile-bar.hidden { opacity: 0; pointer-events: none; }
-
-    #mobile-bar-inner {
+    #nav-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px 16px 12px;
     }
 
-    .mobile-btn {
+    .nav-btn {
+      pointer-events: auto;
       background: none;
-      border: 1px solid rgba(255,255,255,0.15);
-      color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.5);
       font-family: 'Krapka', 'Courier New', monospace;
       font-size: 10px;
-      padding: 8px 14px;
-      border-radius: 2px;
+      padding: 7px 12px;
+      border-radius: 1px;
       -webkit-font-smoothing: none;
       cursor: pointer;
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
+      transition: color 0.15s, border-color 0.15s;
     }
 
-    .mobile-btn:active {
-      background: rgba(255,255,255,0.1);
-      color: #fff;
+    .nav-btn:hover {
+      color: rgba(255,255,255,0.8);
+      border-color: rgba(255,255,255,0.25);
     }
 
-    #mobile-title {
+    .nav-btn:active {
+      background: rgba(255,255,255,0.08);
+      color: #e4e4e7;
+    }
+
+    #nav-title {
       font-size: 10px;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.35);
       text-align: center;
       flex: 1;
       padding: 0 8px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-
-    /* ── Desktop overlay ── */
-    #overlay {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
       pointer-events: none;
-      z-index: 10;
-      opacity: 1;
-      transition: opacity 0.4s ease;
-    }
-
-    #overlay.hidden { opacity: 0; }
-
-    .overlay-text {
-      font-size: 10px;
-      line-height: 1;
-      letter-spacing: 0;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 4px 6px;
-      white-space: nowrap;
     }
 
     /* ── Info panel ── */
     #info-panel {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      background: rgba(9, 9, 11, 0.92);
+      background: rgba(9, 9, 11, 0.94);
       padding: 16px;
       padding-bottom: calc(16px + env(safe-area-inset-bottom, 0));
       z-index: 25;
@@ -129,19 +107,19 @@
       pointer-events: auto;
     }
 
-    #info-panel .info-line {
+    .info-line {
       font-size: 10px;
       line-height: 1.6;
       color: #e4e4e7;
     }
 
-    #info-panel .info-label {
-      color: rgba(255, 255, 255, 0.35);
+    .info-label {
+      color: rgba(255, 255, 255, 0.3);
     }
 
-    #info-panel .info-hint {
+    .info-hint {
       margin-top: 8px;
-      color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.15);
       font-size: 10px;
     }
 
@@ -150,7 +128,7 @@
       top: 12px; right: 16px;
       background: none;
       border: none;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.3);
       font-family: 'Krapka', monospace;
       font-size: 10px;
       cursor: pointer;
@@ -169,69 +147,43 @@
     }
 
     #loading.hidden { opacity: 0; pointer-events: none; }
-
-    /* ── Responsive ── */
-    @media (hover: none) and (pointer: coarse) {
-      /* Touch device: show mobile bar, hide desktop overlay */
-      #mobile-bar { display: block; }
-      #overlay { display: none; }
-    }
-
-    @media (hover: hover) {
-      /* Desktop: hide mobile bar, show desktop overlay */
-      #mobile-bar { display: none !important; }
-    }
   </style>
 </head>
 <body>
   <div id="loading">loading</div>
   <iframe id="sketch-frame" allow="camera; microphone; autoplay"></iframe>
 
-  <!-- Mobile: bottom navigation bar -->
-  <div id="mobile-bar">
-    <div id="mobile-bar-inner">
-      <button class="mobile-btn" id="btn-prev">&lt;</button>
-      <span id="mobile-title"></span>
-      <button class="mobile-btn" id="btn-info">i</button>
-      <button class="mobile-btn" id="btn-next">&gt;</button>
+  <!-- Always-visible navigation bar -->
+  <div id="nav-bar">
+    <div id="nav-inner">
+      <button class="nav-btn" id="btn-prev">&lt; prev</button>
+      <span id="nav-title"></span>
+      <button class="nav-btn" id="btn-info">info</button>
+      <button class="nav-btn" id="btn-next">next &gt;</button>
     </div>
   </div>
 
-  <!-- Desktop: minimal overlay -->
-  <div id="overlay">
-    <span id="overlay-title" class="overlay-text"></span>
-    <span id="overlay-count" class="overlay-text"></span>
-  </div>
-
-  <!-- Info panel (both) -->
+  <!-- Info panel -->
   <div id="info-panel">
     <button id="info-close">close</button>
     <div class="info-line"><span class="info-label">title </span><span id="info-title"></span></div>
     <div class="info-line"><span class="info-label">date  </span><span id="info-date"></span></div>
     <div class="info-line"><span class="info-label">type  </span><span id="info-category"></span></div>
     <div class="info-line"><span class="info-label">about </span><span id="info-description"></span></div>
-    <div class="info-hint" id="info-hint-desktop">arrows: next/prev · i: info · f: fullscreen · r: reload</div>
-    <div class="info-hint" id="info-hint-mobile">swipe edges or use buttons to navigate</div>
+    <div class="info-hint">arrows / buttons: prev & next · i: info · g: archive · r: reload</div>
   </div>
 
   <script>
     let sketches = [];
     let currentIndex = -1;
     let navHistory = [];
-    let hideTimer = null;
     let infoVisible = false;
-    let loadId = 0; // prevents stale loads
+    let loadId = 0;
 
     const frame = document.getElementById('sketch-frame');
-    const overlay = document.getElementById('overlay');
     const loading = document.getElementById('loading');
-    const overlayTitle = document.getElementById('overlay-title');
-    const overlayCount = document.getElementById('overlay-count');
+    const navTitle = document.getElementById('nav-title');
     const infoPanel = document.getElementById('info-panel');
-    const mobileBar = document.getElementById('mobile-bar');
-    const mobileTitle = document.getElementById('mobile-title');
-
-    const isMobile = matchMedia('(hover: none) and (pointer: coarse)').matches;
 
     // ── Load manifest ──
     fetch('sketches.json')
@@ -256,27 +208,20 @@
       const thisLoad = ++loadId;
 
       loading.classList.remove('hidden');
-
-      // Cache-bust: append unique param to prevent browser skipping identical src
       frame.src = `sketches/${sketch.id}/index.html?seed=${seedParam}&_=${thisLoad}`;
 
-      // Update UI
       const countStr = `${String(index + 1).padStart(3, '0')} / ${String(sketches.length).padStart(3, '0')}`;
-      overlayTitle.textContent = sketch.title.toLowerCase();
-      overlayCount.textContent = countStr;
-      mobileTitle.textContent = `${sketch.title.toLowerCase()}  ${countStr}`;
+      navTitle.textContent = `${sketch.title.toLowerCase()}  ${countStr}`;
 
       document.getElementById('info-title').textContent = sketch.title;
       document.getElementById('info-date').textContent = sketch.date;
       document.getElementById('info-category').textContent = sketch.category;
       document.getElementById('info-description').textContent = sketch.description;
 
-      // URL
       const url = new URL(window.location);
       url.searchParams.set('sketch', sketch.id);
       window.history.replaceState({}, '', url);
 
-      showOverlay();
       navHistory.push(index);
       if (navHistory.length > 50) navHistory.shift();
     }
@@ -286,111 +231,70 @@
       let idx;
       if (sketches.length <= 1) { idx = 0; }
       else {
-        // Pick random, avoid current and previous
         let attempts = 0;
-        do {
-          idx = Math.floor(Math.random() * sketches.length);
-          attempts++;
-        } while (idx === currentIndex && attempts < 20);
+        do { idx = Math.floor(Math.random() * sketches.length); attempts++; }
+        while (idx === currentIndex && attempts < 20);
       }
       loadSketch(idx);
     }
 
     function loadNext() {
       if (sketches.length === 0) return;
-      const idx = (currentIndex + 1) % sketches.length;
-      loadSketch(idx);
+      loadSketch((currentIndex + 1) % sketches.length);
     }
 
     function loadPrev() {
-      if (navHistory.length >= 2) {
-        navHistory.pop();
-        const prevIdx = navHistory[navHistory.length - 1];
-        navHistory.pop();
-        loadSketch(prevIdx);
-      } else if (sketches.length > 0) {
-        const idx = (currentIndex - 1 + sketches.length) % sketches.length;
-        loadSketch(idx);
-      }
+      if (sketches.length === 0) return;
+      loadSketch((currentIndex - 1 + sketches.length) % sketches.length);
+    }
+
+    function toggleInfo() {
+      infoVisible = !infoVisible;
+      infoPanel.classList.toggle('visible', infoVisible);
     }
 
     // ── Loading state ──
     window.addEventListener('message', (e) => {
-      if (e.data && e.data.type === 'ready') loading.classList.add('hidden');
+      if (!e.data) return;
+      if (e.data.type === 'ready') loading.classList.add('hidden');
+      // Forward keyboard events from iframe
+      if (e.data.type === 'keydown') handleKey(e.data.key);
     });
 
     frame.addEventListener('load', () => {
       setTimeout(() => loading.classList.add('hidden'), 2000);
     });
 
-    // ── Overlay show/hide ──
-    function showOverlay() {
-      overlay.classList.remove('hidden');
-      if (mobileBar) mobileBar.classList.remove('hidden');
-      clearTimeout(hideTimer);
-      hideTimer = setTimeout(() => {
-        if (!infoVisible) {
-          overlay.classList.add('hidden');
-          if (mobileBar) mobileBar.classList.add('hidden');
-        }
-      }, 4000);
-    }
-
-    function toggleInfo() {
-      infoVisible = !infoVisible;
-      infoPanel.classList.toggle('visible', infoVisible);
-      if (infoVisible) showOverlay();
-    }
-
-    document.addEventListener('mousemove', showOverlay);
-
-    // ── Mobile: button handlers ──
-    document.getElementById('btn-next').addEventListener('click', (e) => {
-      e.stopPropagation();
-      loadRandom();
-    });
-    document.getElementById('btn-prev').addEventListener('click', (e) => {
-      e.stopPropagation();
-      loadPrev();
-    });
-    document.getElementById('btn-info').addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleInfo();
-    });
+    // ── Button handlers ──
+    document.getElementById('btn-next').addEventListener('click', (e) => { e.stopPropagation(); loadNext(); });
+    document.getElementById('btn-prev').addEventListener('click', (e) => { e.stopPropagation(); loadPrev(); });
+    document.getElementById('btn-info').addEventListener('click', (e) => { e.stopPropagation(); toggleInfo(); });
     document.getElementById('info-close').addEventListener('click', (e) => {
-      e.stopPropagation();
-      infoVisible = false;
-      infoPanel.classList.remove('visible');
+      e.stopPropagation(); infoVisible = false; infoPanel.classList.remove('visible');
     });
 
-    // ── Keyboard (desktop) ──
-    document.addEventListener('keydown', (e) => {
-      switch (e.key) {
-        case 'ArrowRight':
-        case ' ':
-          e.preventDefault();
-          loadNext();
-          break;
-        case 'ArrowLeft':
-          e.preventDefault();
-          loadPrev();
-          break;
-        case 'i': case 'I':
-          toggleInfo();
-          break;
+    // ── Keyboard (works even when iframe has focus via postMessage forwarding) ──
+    function handleKey(key) {
+      switch (key) {
+        case 'ArrowRight': loadNext(); break;
+        case 'ArrowLeft': loadPrev(); break;
+        case ' ': loadRandom(); break;
+        case 'i': case 'I': toggleInfo(); break;
+        case 'g': case 'G': window.location.href = 'archive.html'; break;
         case 'f': case 'F':
-          if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(() => {});
-          } else {
-            document.exitFullscreen();
-          }
+          if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+          else document.exitFullscreen();
           break;
-        case 'r': case 'R':
-          if (currentIndex >= 0) loadSketch(currentIndex);
-          break;
-        case 'Escape':
-          if (infoVisible) { infoVisible = false; infoPanel.classList.remove('visible'); }
-          break;
+        case 'r': case 'R': if (currentIndex >= 0) loadSketch(currentIndex); break;
+        case 'Escape': if (infoVisible) { infoVisible = false; infoPanel.classList.remove('visible'); } break;
+      }
+    }
+
+    // Listen on parent document (works when parent has focus)
+    document.addEventListener('keydown', (e) => {
+      if (['ArrowRight','ArrowLeft',' ','i','I','g','G','f','F','r','R','Escape'].includes(e.key)) {
+        e.preventDefault();
+        handleKey(e.key);
       }
     });
   </script>

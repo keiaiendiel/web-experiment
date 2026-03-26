@@ -12,5 +12,13 @@
 </head>
 <body>
   <script src="sketch.js"></script>
+  <script>
+    // Forward navigation keys to parent shell
+    document.addEventListener('keydown', function(e) {
+      if (['ArrowLeft','ArrowRight',' ','i','I','g','G','f','F','r','R','Escape'].includes(e.key)) {
+        parent.postMessage({ type: 'keydown', key: e.key }, '*');
+      }
+    });
+  </script>
 </body>
 </html>
