@@ -18,6 +18,22 @@
         parent.postMessage({ type: "keydown", key: e.key }, "*");
       }
     });
+    window.addEventListener("message", function(e) {
+      if (!e.data || e.data.type !== "touch") return;
+      var canvas = document.querySelector("canvas");
+      if (!canvas || !e.data.touches || !e.data.touches.length) return;
+      var t = e.data.touches[0];
+      var map = { start: "mousedown", move: "mousemove", end: "mouseup" };
+      var type = map[e.data.event];
+      if (!type) return;
+      canvas.dispatchEvent(new MouseEvent(type, {
+        clientX: t.x, clientY: t.y, screenX: t.x, screenY: t.y,
+        bubbles: true, cancelable: true
+      }));
+      if (typeof mouseX !== "undefined") { mouseX = t.x; mouseY = t.y; }
+      if (type === "mousedown") { mouseIsPressed = true; }
+      if (type === "mouseup") { mouseIsPressed = false; }
+    });
   </script>
 </body>
 </html>

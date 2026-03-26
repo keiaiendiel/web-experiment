@@ -297,6 +297,38 @@
         handleKey(e.key);
       }
     });
+
+    // ── Forward touch events to iframe (iOS doesn't deliver touch to iframes reliably) ──
+    function forwardTouch(type, e) {
+      if (!frame.contentWindow) return;
+      const rect = frame.getBoundingClientRect();
+      const touches = [];
+      const source = e.touches && e.touches.length ? e.touches : e.changedTouches;
+      if (!source) return;
+      for (let i = 0; i < source.length; i++) {
+        touches.push({
+          x: source[i].clientX - rect.left,
+          y: source[i].clientY - rect.top,
+          id: source[i].identifier
+        });
+      }
+      frame.contentWindow.postMessage({ type: 'touch', event: type, touches }, '*');
+    }
+
+    // Capture on the iframe element itself
+    frame.addEventListener('touchstart', (e) => forwardTouch('start', e), { passive: true });
+    frame.addEventListener('touchmove', (e) => forwardTouch('move', e), { passive: true });
+    frame.addEventListener('touchend', (e) => forwardTouch('end', e), { passive: true });
+    // Also on document for any touches that miss
+    document.addEventListener('touchstart', (e) => {
+      if (e.target === frame) forwardTouch('start', e);
+    }, { passive: true });
+    document.addEventListener('touchmove', (e) => {
+      if (e.target === frame) forwardTouch('move', e);
+    }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+      if (e.target === frame) forwardTouch('end', e);
+    }, { passive: true });
   </script>
 </body>
 </html>

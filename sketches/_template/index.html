@@ -13,10 +13,33 @@
 <body>
   <script src="sketch.js"></script>
   <script>
-    document.addEventListener("keydown", function(e) {
-      if (["ArrowLeft","ArrowRight"," ","i","I","g","G","f","F","r","R","Escape"].includes(e.key)) {
-        parent.postMessage({ type: "keydown", key: e.key }, "*");
+    // Forward navigation keys to parent shell
+    document.addEventListener('keydown', function(e) {
+      if (['ArrowLeft','ArrowRight',' ','i','I','g','G','f','F','r','R','Escape'].includes(e.key)) {
+        parent.postMessage({ type: 'keydown', key: e.key }, '*');
       }
+    });
+
+    // Receive forwarded touch events from parent shell (iOS iframe fix)
+    window.addEventListener('message', function(e) {
+      if (!e.data || e.data.type !== 'touch') return;
+      var canvas = document.querySelector('canvas');
+      if (!canvas || !e.data.touches || !e.data.touches.length) return;
+      var t = e.data.touches[0];
+      var evtMap = { start: 'mousedown', move: 'mousemove', end: 'mouseup' };
+      var evtType = evtMap[e.data.event];
+      if (!evtType) return;
+      // Dispatch synthetic mouse event on canvas
+      var evt = new MouseEvent(evtType, {
+        clientX: t.x, clientY: t.y,
+        screenX: t.x, screenY: t.y,
+        bubbles: true, cancelable: true
+      });
+      canvas.dispatchEvent(evt);
+      // Also update p5 globals directly
+      if (typeof mouseX !== 'undefined') { mouseX = t.x; mouseY = t.y; }
+      if (evtType === 'mousedown') { mouseIsPressed = true; }
+      if (evtType === 'mouseup') { mouseIsPressed = false; }
     });
   </script>
 </body>
