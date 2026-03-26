@@ -49,9 +49,10 @@ function draw() {
       sum += Math.sin(mDist * 0.07 - t) / (1 + mDist * 0.003);
 
       const v = (sum + 3) / 6;
-      const r = Math.floor(Math.max(0, Math.min(255, v * 80)));
-      const g = Math.floor(Math.max(0, Math.min(255, v * 160 + (sum > 0 ? sum * 40 : 0))));
-      const b = Math.floor(Math.max(0, Math.min(255, v * 255)));
+      const brightness = Math.floor(Math.max(0, Math.min(228, v * 228)));
+      const r = brightness;
+      const g = brightness;
+      const b = brightness;
 
       for (let sx = 0; sx < RES && px + sx < w; sx++) {
         for (let sy = 0; sy < RES && py + sy < h; sy++) {

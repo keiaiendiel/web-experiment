@@ -50,10 +50,7 @@ function draw() {
       const finalSize = Math.max(0.5, size);
 
       const brightness = Math.floor(40 + mouseInfluence * 150 + n * 60);
-      const blue = Math.floor(brightness * 1.2);
-      const green = Math.floor(brightness * 0.7);
-
-      fill(Math.floor(brightness * 0.5), green, Math.min(255, blue));
+      fill(brightness, brightness, brightness);
       circle(x, y, finalSize * 2);
     }
   }

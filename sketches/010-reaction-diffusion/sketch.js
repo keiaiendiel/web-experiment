@@ -121,9 +121,10 @@ function draw() {
       const b = gridB[x + y * gw];
       const a = gridA[x + y * gw];
       const v = 1 - (a - b);
-      const r = Math.floor(Math.max(0, Math.min(255, v * 180)));
-      const g = Math.floor(Math.max(0, Math.min(255, v * 220 + b * 80)));
-      const bl = Math.floor(Math.max(0, Math.min(255, v * 255)));
+      const brightness = Math.floor(Math.max(0, Math.min(228, v * 228)));
+      const r = brightness;
+      const g = brightness;
+      const bl = brightness;
 
       for (let sx = 0; sx < SCALE && x * SCALE + sx < width; sx++) {
         for (let sy = 0; sy < SCALE && y * SCALE + sy < height; sy++) {

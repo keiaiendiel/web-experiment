@@ -20,7 +20,6 @@ function setup() {
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
-  colorMode(HSB, 360, 100, 100, 100);
   for (let i = 0; i < NUM; i++) {
     particles.push({
       x: Math.random() * width,
@@ -28,7 +27,6 @@ function setup() {
       vx: (Math.random() - 0.5) * 2,
       vy: (Math.random() - 0.5) * 2,
       mass: 0.5 + Math.random() * 2,
-      hue: Math.random() * 360,
       px: 0, py: 0,
     });
   }
@@ -63,8 +61,8 @@ function draw() {
     if (p.y > height) { p.y = height; p.vy *= -0.5; }
 
     const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-    const brightness = Math.min(100, 30 + speed * 20);
-    stroke((p.hue + frameCount * 0.1) % 360, 60, brightness, 60);
+    const brightness = Math.min(228, 30 + speed * 50);
+    stroke(brightness, brightness, brightness, 100);
     strokeWeight(p.mass * 0.5);
     line(p.px, p.py, p.x, p.y);
   }

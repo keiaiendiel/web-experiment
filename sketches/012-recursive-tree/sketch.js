@@ -47,7 +47,7 @@ function drawBranch(len, baseAngle, wind, t, depth) {
     const leafSize = map(depth, MAX_DEPTH - 3, MAX_DEPTH, 1, 4);
     const glow = 150 + Math.sin(t * 2 + depth) * 50;
     noStroke();
-    fill(glow, 255, 200, 120);
+    fill(201, 168, 76, 120);
     circle(0, 0, leafSize);
   }
 

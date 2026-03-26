@@ -20,7 +20,7 @@ function setup() {
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
-  colorMode(HSB, 360, 100, 100, 100);
+  // monochrome
 
   const cx = width / 2, cy = height / 2;
   const r = Math.min(width, height) * 0.25;
@@ -35,7 +35,7 @@ function setup() {
       vx: -Math.sin(angle) * speed,
       vy: Math.cos(angle) * speed,
       mass: 2 + Math.random() * 8,
-      hue: (i * 45 + Math.random() * 20) % 360,
+      brightness: 80 + i * 18,
       trail: [],
     });
   }
@@ -43,7 +43,7 @@ function setup() {
   // Central mass
   bodies.push({
     x: cx, y: cy, vx: 0, vy: 0,
-    mass: 30, hue: 40, trail: [],
+    mass: 30, brightness: 201, trail: [],
   });
 
   background(0);
@@ -79,7 +79,7 @@ function draw() {
     noFill();
     for (let i = 1; i < b.trail.length; i++) {
       const alpha = map(i, 0, b.trail.length, 5, 40);
-      stroke(b.hue, 60, 80, alpha);
+      stroke(b.brightness, b.brightness, b.brightness, alpha);
       strokeWeight(b.mass * 0.1);
       line(b.trail[i - 1].x, b.trail[i - 1].y, b.trail[i].x, b.trail[i].y);
     }
@@ -88,9 +88,9 @@ function draw() {
   // Draw bodies
   for (const b of bodies) {
     noStroke();
-    fill(b.hue, 50, 100);
+    fill(b.brightness);
     circle(b.x, b.y, b.mass * 1.5);
-    fill(b.hue, 20, 100, 30);
+    fill(b.brightness, b.brightness, b.brightness, 30);
     circle(b.x, b.y, b.mass * 3);
   }
 
@@ -119,7 +119,7 @@ function mouseReleased() {
       x: dragStart.x, y: dragStart.y,
       vx, vy,
       mass: 3 + Math.random() * 5,
-      hue: Math.random() * 360,
+      brightness: 80 + Math.floor(Math.random() * 148),
       trail: [],
     });
     if (bodies.length > 30) bodies.splice(0, 1);

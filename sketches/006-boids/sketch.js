@@ -26,7 +26,7 @@ function setup() {
   randomSeed(SEED);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
-  colorMode(HSB, 360, 100, 100, 100);
+  // monochrome
   initGrid();
   for (let i = 0; i < NUM; i++) {
     boids.push({
@@ -106,9 +106,9 @@ function draw() {
     if (b.x < 0) b.x += width; if (b.x > width) b.x -= width;
     if (b.y < 0) b.y += height; if (b.y > height) b.y -= height;
 
-    const heading = Math.atan2(b.vy, b.vx);
-    const hue = ((heading / Math.PI + 1) * 180) % 360;
-    stroke(hue, 70, 90, 70);
+    const speed = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
+    const brightness = 40 + (speed / MAX_SPEED) * 180;
+    stroke(brightness, brightness, brightness, 150);
     strokeWeight(2);
     point(b.x, b.y);
   }

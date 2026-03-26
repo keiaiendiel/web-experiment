@@ -61,19 +61,17 @@ function draw() {
       const a = age[i];
       let r, g, b;
       if (a === 0) {
-        r = g = b = 0;
+        r = g = b = 9;
       } else if (a < 10) {
-        r = 255; g = 255; b = 255;
+        r = g = b = 228;
       } else if (a < 80) {
         const t = (a - 10) / 70;
-        r = Math.floor(255 * (1 - t) + 80 * t);
-        g = Math.floor(255 * (1 - t) + 120 * t);
-        b = Math.floor(255 * (1 - t * 0.3));
+        const v = Math.floor(228 * (1 - t * 0.6));
+        r = g = b = v;
       } else {
         const t = Math.min((a - 80) / 200, 1);
-        r = Math.floor(80 + 80 * t);
-        g = Math.floor(120 * (1 - t) + 40 * t);
-        b = Math.floor(255 * (1 - t * 0.5) + 140 * t);
+        const v = Math.floor(90 * (1 - t * 0.5));
+        r = g = b = v;
       }
       for (let cx = 0; cx < CELL && x * CELL + cx < width; cx++) {
         for (let cy = 0; cy < CELL && y * CELL + cy < height; cy++) {

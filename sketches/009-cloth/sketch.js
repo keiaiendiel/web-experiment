@@ -96,15 +96,15 @@ function draw() {
     const a = points[s.a], b = points[s.b];
     const dist = Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2);
     const tension = dist / TEAR_DIST;
-    const r = Math.floor(255 * tension);
-    const g = Math.floor(255 * (1 - tension));
-    stroke(r, g, 150, 150);
+    const brightness = Math.floor(228 * (1 - tension * 0.7));
+    const alpha = 80 + tension * 100;
+    stroke(brightness, brightness, brightness, alpha);
     line(a.x, a.y, b.x, b.y);
   }
 
   for (const p of points) {
     if (p.pinned) {
-      fill(255, 100, 100);
+      fill(201, 168, 76);
       noStroke();
       circle(p.x, p.y, 4);
     }

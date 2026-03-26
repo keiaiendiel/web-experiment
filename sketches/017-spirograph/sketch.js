@@ -18,14 +18,14 @@ function setup() {
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
-  colorMode(HSB, 360, 100, 100, 100);
+  // monochrome
 
   for (let i = 0; i < NUM_LAYERS; i++) {
     layers.push({
       R: 100 + Math.random() * 100,
       r: 30 + Math.random() * 60,
       d: 40 + Math.random() * 80,
-      hue: (i * 90 + Math.random() * 30) % 360,
+      brightness: 60 + i * 50,
       speed: 0.02 + Math.random() * 0.02,
       px: null, py: null,
     });
@@ -52,9 +52,8 @@ function draw() {
 
     if (layer.px !== null) {
       const speed = Math.sqrt((x - layer.px) ** 2 + (y - layer.py) ** 2);
-      const hue = (layer.hue + angle * 0.5) % 360;
       const alpha = Math.min(50, 10 + speed * 5);
-      stroke(hue, 70, 90, alpha);
+      stroke(layer.brightness, layer.brightness, layer.brightness, alpha);
       strokeWeight(0.8);
       line(layer.px, layer.py, x, y);
     }
@@ -72,7 +71,7 @@ function mousePressed() {
     layer.R = 80 + Math.random() * 150;
     layer.r = 20 + Math.random() * 80;
     layer.d = 30 + Math.random() * 100;
-    layer.hue = Math.random() * 360;
+    layer.brightness = 60 + Math.random() * 168;
     layer.px = null;
     layer.py = null;
   }

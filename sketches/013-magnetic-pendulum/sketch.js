@@ -22,16 +22,17 @@ function setup() {
   randomSeed(SEED);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
-  colorMode(HSB, 360, 100, 100, 100);
+  // monochrome: 3 magnets at different brightness levels
 
   const cx = width / 2, cy = height / 2;
   const r = Math.min(width, height) * 0.2;
+  const magBrightness = [228, 140, 70]; // bright, medium, dim
   for (let i = 0; i < 3; i++) {
     const a = (i / 3) * TWO_PI - HALF_PI;
     magnets.push({
       x: cx + Math.cos(a) * r,
       y: cy + Math.sin(a) * r,
-      hue: i * 120,
+      brightness: magBrightness[i],
     });
   }
 
@@ -58,7 +59,7 @@ function draw() {
   background(0, 3);
 
   for (const mag of magnets) {
-    fill(mag.hue, 80, 80);
+    fill(mag.brightness);
     noStroke();
     circle(mag.x, mag.y, 12);
   }
@@ -99,7 +100,8 @@ function draw() {
 
     const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
     const brightness = Math.min(100, 30 + speed * 50);
-    stroke(magnets[closestMag].hue, 70, brightness, 60);
+    const b = magnets[closestMag].brightness;
+    stroke(b, b, b, 60);
     strokeWeight(1.5);
 
     if (p.trail.length > 0) {

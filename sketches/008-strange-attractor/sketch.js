@@ -21,7 +21,7 @@ function setup() {
   randomSeed(SEED);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
-  colorMode(HSB, 360, 100, 100, 100);
+  // monochrome
 
   targetA = a; targetB = b;
   pointsX = new Float32Array(NUM_POINTS);
@@ -75,13 +75,10 @@ function draw() {
       pixels[pi] = pixels[pi + 1] = pixels[pi + 2] = 0;
     } else {
       const t = Math.min(v / 3, 1);
-      const hue = (220 + t * 140) % 360;
-      const sat = 80 - t * 30;
-      const bri = Math.min(t * 300, 255);
-      const c2 = hsvToRgb(hue / 360, sat / 100, bri / 255);
-      pixels[pi] = c2[0];
-      pixels[pi + 1] = c2[1];
-      pixels[pi + 2] = c2[2];
+      const bri = Math.floor(Math.min(t * 280, 228));
+      pixels[pi] = bri;
+      pixels[pi + 1] = bri;
+      pixels[pi + 2] = bri;
     }
     pixels[pi + 3] = 255;
   }

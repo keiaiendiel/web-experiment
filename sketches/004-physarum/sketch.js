@@ -104,9 +104,10 @@ function draw() {
     const v = trail[i];
     const pi = i * 4;
     const t = v / 255;
-    pixels[pi] = Math.floor(t * 120 + t * t * 135);
-    pixels[pi + 1] = Math.floor(t * 200 + t * t * 55);
-    pixels[pi + 2] = Math.floor(t * 80 + t * t * 175);
+    const brightness = Math.floor(t * 180 + t * t * 48);
+    pixels[pi] = brightness;
+    pixels[pi + 1] = brightness;
+    pixels[pi + 2] = brightness;
     pixels[pi + 3] = 255;
   }
   updatePixels();

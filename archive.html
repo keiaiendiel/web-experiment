@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>archive — play.kindl.work</title>
+  <style>
+    @font-face {
+      font-family: 'Krapka';
+      src: url('fonts/DRKrapkaRound-FontSize10px.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: block;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #09090b;
+      font-family: 'Krapka', 'Courier New', monospace;
+      -webkit-font-smoothing: none;
+      -moz-osx-font-smoothing: grayscale;
+      color: #e4e4e7;
+      overflow-x: hidden;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    #content {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    #header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 40px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    #header h1 {
+      font-size: 10px;
+      font-weight: normal;
+      letter-spacing: 0;
+      color: rgba(255,255,255,0.4);
+    }
+
+    #random-btn {
+      font-family: 'Krapka', monospace;
+      font-size: 10px;
+      background: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.5);
+      padding: 6px 12px;
+      cursor: pointer;
+      -webkit-font-smoothing: none;
+      border-radius: 1px;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    #random-btn:hover { color: #e4e4e7; border-color: rgba(255,255,255,0.3); }
+
+    .category {
+      margin-bottom: 32px;
+    }
+
+    .category-label {
+      font-size: 10px;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 10px;
+      letter-spacing: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      #content { padding: 24px 12px 60px; }
+    }
+
+    .card {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      background: #0f0f12;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      text-decoration: none;
+      display: block;
+    }
+
+    .card:hover {
+      background: #18181b;
+    }
+
+    .card-title {
+      position: absolute;
+      bottom: 6px;
+      left: 8px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0;
+      transition: color 0.2s ease;
+    }
+
+    .card:hover .card-title {
+      color: rgba(255,255,255,0.7);
+    }
+
+    .card-number {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.1);
+    }
+
+    /* Subtle noise dot per card */
+    .card-dot {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+
+    #footer {
+      text-align: center;
+      padding: 40px 0 20px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.15);
+    }
+
+    #footer a {
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+    }
+
+    #footer a:hover { color: #c9a84c; }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+  <div id="content">
+    <div id="header">
+      <h1>archive</h1>
+      <a id="random-btn" href="index.html">random</a>
+    </div>
+    <div id="categories"></div>
+    <div id="footer">
+      <a href="https://kindl.work">kindl.work</a>
+    </div>
+  </div>
+
+  <script>
+    // Background noise canvas
+    const bgCanvas = document.getElementById('bg-canvas');
+    const ctx = bgCanvas.getContext('2d');
+
+    function resizeBg() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    resizeBg();
+    window.addEventListener('resize', resizeBg);
+
+    let bgFrame = 0;
+    function drawBg() {
+      bgFrame++;
+      if (bgFrame % 3 !== 0) { requestAnimationFrame(drawBg); return; } // throttle
+
+      ctx.fillStyle = '#09090b';
+      ctx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+      const w = bgCanvas.width, h = bgCanvas.height;
+      const step = 40;
+      const t = bgFrame * 0.001;
+
+      for (let x = 0; x < w; x += step) {
+        for (let y = 0; y < h; y += step) {
+          const n = Math.sin(x * 0.003 + t) * Math.cos(y * 0.004 + t * 0.7) * 0.5 + 0.5;
+          if (n > 0.6) {
+            const alpha = (n - 0.6) * 0.08;
+            ctx.fillStyle = `rgba(228, 228, 228, ${alpha})`;
+            ctx.fillRect(x, y, 1, 1);
+          }
+        }
+      }
+      requestAnimationFrame(drawBg);
+    }
+    drawBg();
+
+    // Category display order and labels
+    const CATEGORY_ORDER = [
+      'flow', 'typography', 'automata', 'agent', 'swarm',
+      'particles', 'growth', 'chaos', 'physics', 'geometry',
+      'effect', 'organic', 'machine', 'tessellation'
+    ];
+
+    // Load and render sketches
+    fetch('sketches.json')
+      .then(r => r.json())
+      .then(sketches => {
+        const container = document.getElementById('categories');
+
+        // Group by category
+        const groups = {};
+        sketches.forEach((s, i) => {
+          s._index = i;
+          if (!groups[s.category]) groups[s.category] = [];
+          groups[s.category].push(s);
+        });
+
+        // Render categories in order
+        for (const cat of CATEGORY_ORDER) {
+          if (!groups[cat]) continue;
+          const section = document.createElement('div');
+          section.className = 'category';
+
+          const label = document.createElement('div');
+          label.className = 'category-label';
+          label.textContent = cat;
+          section.appendChild(label);
+
+          const grid = document.createElement('div');
+          grid.className = 'grid';
+
+          for (const sketch of groups[cat]) {
+            const card = document.createElement('a');
+            card.className = 'card';
+            card.href = `index.html?sketch=${sketch.id}`;
+
+            const title = document.createElement('div');
+            title.className = 'card-title';
+            title.textContent = sketch.title.toLowerCase();
+            card.appendChild(title);
+
+            const num = document.createElement('div');
+            num.className = 'card-number';
+            num.textContent = sketch.id.split('-')[0];
+            card.appendChild(num);
+
+            // Random decorative dots per card
+            const dotCount = 2 + Math.floor(Math.random() * 4);
+            for (let d = 0; d < dotCount; d++) {
+              const dot = document.createElement('div');
+              dot.className = 'card-dot';
+              const size = 4 + Math.random() * 40;
+              dot.style.width = size + 'px';
+              dot.style.height = size + 'px';
+              dot.style.left = (Math.random() * 80 + 10) + '%';
+              dot.style.top = (Math.random() * 60 + 10) + '%';
+              card.appendChild(dot);
+            }
+
+            grid.appendChild(card);
+          }
+
+          section.appendChild(grid);
+          container.appendChild(section);
+        }
+      });
+  </script>
+</body>
+</html>

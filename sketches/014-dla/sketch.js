@@ -88,8 +88,9 @@ function draw() {
   for (let x = 0; x < gw; x++) {
     for (let y = 0; y < gh; y++) {
       if (!grid[x + y * gw]) continue;
-      const hue = (colorGrid[x + y * gw] * 0.3) % 360;
-      const rgb = hsvToRgb(hue / 360, 0.7, 0.9);
+      const age = colorGrid[x + y * gw];
+      const brightness = Math.max(40, 228 - age * 0.15);
+      const rgb = [Math.floor(brightness), Math.floor(brightness), Math.floor(brightness)];
       for (let sx = 0; sx < CELL && x * CELL + sx < width; sx++) {
         for (let sy = 0; sy < CELL && y * CELL + sy < height; sy++) {
           const pi = ((y * CELL + sy) * width + (x * CELL + sx)) * 4;

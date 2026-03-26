@@ -81,7 +81,7 @@ function draw() {
     const brightness = Math.floor(100 + d.alpha * (1 - pile * 0.5));
     const green = Math.floor(brightness * (0.8 + pile * 0.2));
 
-    fill(brightness * 0.6, green, brightness, d.alpha);
+    fill(brightness, brightness, brightness, d.alpha);
     noStroke();
     text(d.ch, d.x, d.y);
   }
