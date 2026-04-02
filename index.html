@@ -77,16 +77,33 @@
       color: #e4e4e7;
     }
 
-    #nav-title {
-      font-size: 10px;
-      color: rgba(255,255,255,0.35);
-      text-align: center;
+    #nav-center {
       flex: 1;
+      text-align: center;
       padding: 0 8px;
+      overflow: hidden;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    #nav-hint {
+      font-size: 10px;
+      color: rgba(255,255,255,0.4);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      pointer-events: none;
+      max-width: 100%;
+    }
+
+    #nav-title {
+      font-size: 10px;
+      color: rgba(255,255,255,0.2);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     #hint {
@@ -172,7 +189,10 @@
   <div id="nav-bar">
     <div id="nav-inner">
       <button class="nav-btn" id="btn-prev">&lt; prev</button>
-      <span id="nav-title"></span>
+      <div id="nav-center">
+        <span id="nav-hint"></span>
+        <span id="nav-title"></span>
+      </div>
       <button class="nav-btn" id="btn-info">info</button>
       <button class="nav-btn" id="btn-next">next &gt;</button>
     </div>
@@ -198,6 +218,7 @@
     const frame = document.getElementById('sketch-frame');
     const loading = document.getElementById('loading');
     const navTitle = document.getElementById('nav-title');
+    const navHint = document.getElementById('nav-hint');
     const infoPanel = document.getElementById('info-panel');
 
     // ── Load manifest ──
@@ -227,6 +248,7 @@
 
       const countStr = `${String(index + 1).padStart(3, '0')} / ${String(sketches.length).padStart(3, '0')}`;
       navTitle.textContent = `${sketch.title.toLowerCase()}  ${countStr}`;
+      navHint.textContent = sketch.description;
 
       document.getElementById('info-title').textContent = sketch.title;
       document.getElementById('info-date').textContent = sketch.date;
