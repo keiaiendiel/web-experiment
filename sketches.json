@@ -223,5 +223,14 @@
     "description": "Mass particles attracted to mouse with Gaussian drift. Click/drag spawns.",
     "libs": [],
     "permissions": []
+  },
+  {
+    "id": "051-solar-system",
+    "title": "Solar System",
+    "date": "2026-04-02",
+    "category": "physics",
+    "description": "3D orbital system with black hole gravity. Mouse X = speed, Y = mass. WASD moves black hole. Space regenerates. Click spawns stars.",
+    "libs": [],
+    "permissions": []
   }
 ]

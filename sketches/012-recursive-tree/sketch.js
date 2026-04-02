@@ -1,6 +1,7 @@
 // Title: Recursive Tree
-// Date: 2026-03-25
+// Date: 2024-05-06
 // Category: growth
+// Ported from kindl.work p5.js Editor — original HSB style
 
 p5.disableFriendlyErrors = true;
 
@@ -8,7 +9,9 @@ const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 const params = new URLSearchParams(window.location.search);
 const SEED = parseInt(params.get('seed')) || Date.now();
 
-const MAX_DEPTH = isMobile ? 9 : 12;
+let smoothedMouseX = 0;
+let smoothedMouseY = 0;
+const smoothing = 0.5;
 
 function setup() {
   pixelDensity(1);
@@ -16,58 +19,46 @@ function setup() {
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
+  smoothedMouseX = width / 2;
+  smoothedMouseY = height / 2;
   if (parent !== window) parent.postMessage({ type: 'ready' }, '*');
 }
 
 function draw() {
+  colorMode(RGB);
   background(0);
-  colorMode(HSB, 360, 100, 100);
-  const baseAngle = map(mouseY, 0, height, PI / 8, PI / 3);
-  const wind = map(mouseX, 0, width, -0.15, 0.15);
-  const t = frameCount * 0.01;
-
+  noFill();
   translate(width / 2, height);
-  stroke(255);
-  drawBranch(height * 0.25, baseAngle, wind, t, 0);
+
+  smoothedMouseX += (mouseX - smoothedMouseX) * smoothing;
+  smoothedMouseY += (mouseY - smoothedMouseY) * smoothing;
+
+  drawLine(height / 2);
 }
 
-function drawBranch(len, baseAngle, wind, t, depth) {
-  if (depth > MAX_DEPTH || len < 2) return;
+function drawLine(d) {
+  let angle = PI / map(smoothedMouseY, 0, height, 1, 5);
+  if (d > 10) {
+    colorMode(HSB);
+    stroke(360 - d, 100, 100);
+    let ext = map(smoothedMouseY, 0, height, -d, d);
+    line(0, 0, 0, -d + ext);
+    translate(0, -d + ext);
+    d = d * 0.6;
 
-  const sw = map(depth, 0, MAX_DEPTH, 4, 0.5);
-  const noiseVal = noise(depth * 0.3, t + depth * 0.1);
-  const wobble = (noiseVal - 0.5) * 0.1;
-  const hue = 360 - depth * (360 / MAX_DEPTH);
-
-  strokeWeight(sw);
-  stroke(hue, 100, 100);
-  line(0, 0, 0, -len);
-  translate(0, -len);
-
-  if (depth > MAX_DEPTH - 3) {
-    const leafSize = map(depth, MAX_DEPTH - 3, MAX_DEPTH, 1, 4);
-    const glow = 150 + Math.sin(t * 2 + depth) * 50;
-    noStroke();
-    fill(hue, 80, 100, 80);
-    circle(0, 0, leafSize);
-  }
-
-  const shrink = 0.68 + noise(depth, t * 0.5) * 0.1;
-
-  push();
-  rotate(baseAngle + wind + wobble);
-  drawBranch(len * shrink, baseAngle, wind * 0.9, t, depth + 1);
-  pop();
-
-  push();
-  rotate(-baseAngle + wind + wobble);
-  drawBranch(len * shrink, baseAngle, wind * 0.9, t, depth + 1);
-  pop();
-
-  if (depth < 4 && noise(depth * 2, t) > 0.6) {
     push();
-    rotate(wind * 2 + wobble * 3);
-    drawBranch(len * shrink * 0.7, baseAngle, wind, t, depth + 2);
+    rotate(angle + map(smoothedMouseX, 0, width, -2, 2));
+    drawLine(d);
+    pop();
+
+    push();
+    rotate(angle + map(smoothedMouseY, 0, height, -2, 2));
+    drawLine(d);
+    pop();
+
+    push();
+    rotate(-angle);
+    drawLine(d);
     pop();
   }
 }
