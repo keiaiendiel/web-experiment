@@ -66,9 +66,9 @@ function draw() {
         // Color by field strength: strong = warm pink/red, weak = cool blue
         const strength = constrain(mag * 8000, 0, 1);
         const hue = lerp(220, 350, strength);
-        const bright = lerp(40, 100, strength);
-        const alpha = lerp(30, 90, strength);
-        const weight = lerp(0.4, 2.0, strength);
+        const bright = lerp(70, 100, strength);
+        const alpha = lerp(50, 85, strength);
+        const weight = lerp(0.3, 1.2, strength);
 
         stroke(hue, 90, bright, alpha);
         strokeWeight(weight);
