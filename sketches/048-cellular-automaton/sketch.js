@@ -13,7 +13,6 @@ let generation = 0;
 let dotSize;
 
 function setup() {
-  pixelDensity(1);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
   background(0);

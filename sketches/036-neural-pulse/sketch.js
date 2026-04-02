@@ -13,7 +13,6 @@ let nodes = [];
 let pulses = [];
 
 function setup() {
-  pixelDensity(1);
   randomSeed(SEED);
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);

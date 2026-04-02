@@ -11,7 +11,6 @@ const MAX_DIST = 5;
 let particles = [];
 
 function setup() {
-  pixelDensity(1);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
   initParticles();

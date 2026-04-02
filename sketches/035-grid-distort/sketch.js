@@ -13,7 +13,6 @@ const DISTORT_RADIUS = 200;
 const DISTORT_STRENGTH = 40;
 
 function setup() {
-  pixelDensity(1);
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);

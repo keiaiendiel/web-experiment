@@ -15,7 +15,6 @@ let shapeMode = 0;
 let modes;
 
 function setup() {
-  pixelDensity(1);
   createCanvas(windowWidth, windowHeight, WEBGL);
   frameRate(isMobile ? 30 : 60);
   cols = W / SCL;

@@ -15,7 +15,6 @@ let dragging = false;
 let dragStart = null;
 
 function setup() {
-  pixelDensity(1);
   randomSeed(SEED);
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);

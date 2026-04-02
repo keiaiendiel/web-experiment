@@ -10,7 +10,6 @@ const MAX_MOVERS = isMobile ? 500 : 2000;
 let movers = [];
 
 function setup() {
-  pixelDensity(1);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
   for (let i = 0; i < 10; i++) {

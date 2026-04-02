@@ -22,7 +22,6 @@ let gridCols, gridRows, grid;
 const CELL = PERCEPTION;
 
 function setup() {
-  pixelDensity(1);
   randomSeed(SEED);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);

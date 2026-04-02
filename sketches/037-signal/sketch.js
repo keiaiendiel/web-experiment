@@ -11,7 +11,6 @@ const NUM_WAVES = 6;
 let waves = [];
 
 function setup() {
-  pixelDensity(1);
   randomSeed(SEED);
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);

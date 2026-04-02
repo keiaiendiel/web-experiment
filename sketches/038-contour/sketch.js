@@ -11,7 +11,6 @@ const RES = isMobile ? 6 : 4;
 const NUM_LEVELS = 12;
 
 function setup() {
-  pixelDensity(1);
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 25 : 40);

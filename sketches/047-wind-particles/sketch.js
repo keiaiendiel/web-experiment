@@ -12,7 +12,6 @@ let wind;
 let originalWind;
 
 function setup() {
-  pixelDensity(1);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
   originalWind = createVector(

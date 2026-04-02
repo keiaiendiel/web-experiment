@@ -18,7 +18,6 @@ let generation = 0;
 let avgFitness = 0;
 
 function setup() {
-  pixelDensity(1);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
   initPop();

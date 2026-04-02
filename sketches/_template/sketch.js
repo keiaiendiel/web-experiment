@@ -9,7 +9,6 @@ const params = new URLSearchParams(window.location.search);
 const SEED = parseInt(params.get('seed')) || Date.now();
 
 function setup() {
-  pixelDensity(1);
   randomSeed(SEED);
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);

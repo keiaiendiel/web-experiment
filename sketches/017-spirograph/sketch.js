@@ -13,7 +13,6 @@ let layers = [];
 const NUM_LAYERS = 4;
 
 function setup() {
-  pixelDensity(1);
   randomSeed(SEED);
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);

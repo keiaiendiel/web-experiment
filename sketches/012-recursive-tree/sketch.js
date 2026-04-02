@@ -14,7 +14,6 @@ let smoothedMouseY = 0;
 const smoothing = 0.5;
 
 function setup() {
-  pixelDensity(1);
   randomSeed(SEED);
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);

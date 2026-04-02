@@ -20,7 +20,6 @@ let twoPiMultiplier;
 let trail = 10;
 
 function setup() {
-  pixelDensity(1);
   randomSeed(SEED);
   noiseSeed(SEED);
   frameRate(isMobile ? 30 : 40);

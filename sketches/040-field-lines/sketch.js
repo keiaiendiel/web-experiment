@@ -14,7 +14,6 @@ const STEP_SIZE = 3;
 let charges = [];
 
 function setup() {
-  pixelDensity(1);
   randomSeed(SEED);
   noiseSeed(SEED);
   createCanvas(windowWidth, windowHeight);

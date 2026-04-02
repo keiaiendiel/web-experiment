@@ -10,7 +10,6 @@ const NUM = isMobile ? 1000 : 3000;
 let particles = [];
 
 function setup() {
-  pixelDensity(1);
   createCanvas(windowWidth, windowHeight);
   frameRate(isMobile ? 30 : 60);
   for (let i = 0; i < NUM; i++) {
